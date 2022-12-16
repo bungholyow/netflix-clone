@@ -1,25 +1,28 @@
 import { BellIcon, MagnifyingGlassCircleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import useAuth from '../hooks/useAuth'
 
 
 function Header() {
-const [isScrolled, setIsScrolled] = useState(false)
+    const [isScrolled, setIsScrolled] = useState(false)
+    const { logout } = useAuth()
 
-useEffect(() => {
-  const handleScroll = () => {
-    if (window.scrollY > 0) {
-        setIsScrolled(true)
-    }else {
-        setIsScrolled(false)
-    }
-  }
 
-  window.addEventListener('scroll', handleScroll)
-  return () => {
-    window.removeEventListener('scroll', handleScroll)
-  }
-}, [])
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 0) {
+                setIsScrolled(true)
+            } else {
+                setIsScrolled(false)
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll)
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
+    }, [])
 
 
 
@@ -47,11 +50,12 @@ useEffect(() => {
                 <p className='hidden lg:inline'>Kids</p>
                 <BellIcon className='h-6 w-6' />
                 <Link href='/akun'>
-                <img
-                    src="https://rb.gy/g1pwyx" 
-                    alt=""
-                    className="cursor-pointer rounded"
-                />
+                    <img
+                        onClick={logout}
+                        src="https://rb.gy/g1pwyx"
+                        alt=""
+                        className="cursor-pointer rounded"
+                    />
                 </Link>
             </div>
         </header>

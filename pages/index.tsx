@@ -1,8 +1,11 @@
-
 import Head from 'next/head'
+import { useRecoilValue } from 'recoil'
+import { modalState } from '../atoms/modalAtom'
 import Banner from '../components/Banner'
 import Header from '../components/Header'
+import Modal from '../components/Modal'
 import Row from '../components/Row'
+import useAuth from '../hooks/useAuth'
 import { Movie } from '../typings'
 import requests from '../utils/requests'
 
@@ -28,8 +31,13 @@ const Home = ({
   romanceMovies,
   topRated,
   trendingNow,
-filmIndo,} : Props) => {
+  filmIndo, }: Props) => {
   // console.log(netflixOriginals)
+  const { logout, loading } = useAuth()
+  const showModal = useRecoilValue(modalState)
+
+  if (loading) return 'Sedang Loading'
+
   return (
     <div className="relative h-screen bg-gradient-to-b lg:h-[140vh]">
       <Head>
@@ -44,11 +52,11 @@ filmIndo,} : Props) => {
         {/* banner */}
         <Banner netflixOriginals={netflixOriginals} />
         <section className='md:space-y-20'>
-        <Row title="Trending Now" movies={trendingNow} />
+          <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
           <Row title="Action Thrillers" movies={actionMovies} />
           {/* My List */}
-  
+
           <Row title="Comedies" movies={comedyMovies} />
           <Row title="Scary Movies" movies={horrorMovies} />
           <Row title="Romance Movies" movies={romanceMovies} />
@@ -56,6 +64,7 @@ filmIndo,} : Props) => {
         </section>
       </main>
       {/* modal */}
+      {showModal && <Modal />}
     </div >
   )
 }
